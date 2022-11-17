@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💗</title>
+    <meta name="keywords" content="💗">
+    <meta name="description" content="💗">
+    <link rel="stylesheet" href="./index/index.css">
+    <link rel="stylesheet" href="./APlayer/APlayer.min.css">
+</head>
+
+<body onclick="initFun()">
+    <p class="love_you">💗</p>
+    <!-- 这里替换音乐 -->
+    <!-- <audio src="./wy.mp3" autoplay="autoplay" loop="loop" controls="controls"></audio> -->
+    <div id="player4"></div>
+	<script src="./APlayer/APlayer.min.js"></script>
+    <canvas id="lovexf"></canvas>
+    <script src="./index/index.js"></script>
+    <script>
+         var ap4 = new APlayer({
+            element: document.getElementById('player4'),
+            autoplay: true,
+            preload: 'auto',
+            showlrc: false,
+            mutex: true,
+            fixed: false,
+            theme: '#ad7a86',
+            music: [
+                {
+                    title: '唯一',
+                    author:'告五人',
+                    url: './index/wy.mp3',
+                    pic: './index/wy.jpg'
+                },{
+                    title: '枫',
+                    author:'周杰伦',
+                    url: './index/f.m4a',
+                    pic: './index/wy.jpg'
+                }
+            ]
+        });
+        function initFun(){
+            ap4.play()
+        }
+        document.body.addEventListener('ontouchstart', function(){
+            ap4.play()
+        }, false);
+    </script>
+</body>
+
+</html>
