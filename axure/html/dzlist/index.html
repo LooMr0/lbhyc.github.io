@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#303B4F">
+    <meta content="telephone=no" name="format-detection"/>
+    <meta content="email=no" name="format-detection"/>
+    <meta name="apple-mobile-web-app-title" content="took-web">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="x5-orientation" content="portrait"/>
+    <meta name="x5-fullscreen" content="true"/>
+    <meta name="x5-page-mode" content="app"/>
+    <meta name="HandheldFriendly" content="true">
+    <meta name="MobileOptimized" content="320">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="msapplication-TileColor" content="#303B4F"/>
+    <meta name="robots" content="index,follow">
+    <title>电子锁</title>
+    <!--    基础css样式文件-->
+    <link rel="stylesheet" href="../../static/index.css">
+    <link rel="stylesheet" href="../../static/css/vant.css">
+    <!-- APICloud   api.css 处理不同平台浏览器的默认样式-->
+    <link rel="stylesheet" href="../../css/api.css">
+    <script src="../../static/fastclick.js"></script>
+    <style>
+        #app{
+            position: relative;
+        }
+        body{
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            background: #f2f3f5;
+        }
+        .search-head{
+            width: 100%;
+            height: 1.4rem;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            justify-content: center;
+            vertical-align: middle;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+        }
+        .mescroll{
+            touch-action: pan-y;
+            width: 100%;
+            position: fixed;
+            top: calc(1.4rem + 0px);
+            bottom: 0;
+            height: calc(100vh - 1.4rem - 55px);
+            overflow: auto;
+            z-index: 10;
+            background: rgb(230, 229, 229);
+        }
+        .footer{
+            height:55px;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            background: #fff;
+        }
+        .footer .van-goods-action{
+            width: 100%;
+        }
+        .mescroll .van-list{
+            width: 100%;
+            min-height: calc(100vh - 2.7rem - 27px);
+        }
+        .flex-head{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .van-nav-bar{
+            width: 100%;
+        }
+        .head{
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 10px;
+            position:sticky;
+            top: 1px;
+            z-index: 999;
+        }
+        .search{
+            width: 100%;
+        }
+        .demo-swipe-cell .right-box{
+            width: 195px;
+            height: 100%;
+            text-align: center;
+            line-height: 220px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: nowrap;
+            background-color: #fff;
+        }
+        .totop-btn{
+            width: 65px;
+            height: 220px;
+            text-align: center;
+            line-height:220px;
+            background:  rgba(51,116,238,1);
+            color: #fff;
+        }
+        .control-btn{
+            width: 65px;
+            height:220px;
+            text-align: center;
+            line-height:220px;
+            background:  rgb(0, 137, 250);
+            color: #fff;
+        }
+        .delete-btn{
+            width: 65px;
+            height: 220px;
+            text-align: center;
+            line-height:220px;
+            background: #f44;
+            color: #fff;
+        }
+        .mt10{
+            margin-top: 10px;
+        }
+        .mt10 .van-cell__value{
+            color: #666;
+        }
+        .van-panel__header .van-cell__title , .van-panel__header-value {
+            color:#3374ee!important;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .nocont .van-nav-bar__title{
+            color: rgb(102, 93, 93)!important;
+        }
+        .van-pull-refresh{
+            overflow: initial!important;
+        }
+        .statutip{
+            position: absolute;
+            width: 50px;
+            height: 20px;
+            background-color: #3374ee;
+            z-index: 99;
+            top: 0;
+            right: -20px;
+            color: #fff;
+            font-size: 18px;
+            transform: rotateZ(45deg);
+            text-align: center;
+        }
+        .statutip i{
+            transform: rotateZ(315deg);
+        }
+        .head form{
+            width: 100%;
+        }
+        .bg-blue{
+            background-color: rgb(236, 236, 236);
+        }
+        .bg-blue .van-panel , .bg-blue .van-panel *{
+            background-color: transparent!important;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="search-head flex-head">
+        <van-nav-bar
+            class="nocont"
+            title="电子锁(未连接)"
+            left-text=""
+            left-arrow
+            @click-left="onClickLeft">
+                <van-icon name="scan" slot="right" />
+            </van-nav-bar>
+    </div>
+    <div class="mescroll">
+        <van-pull-refresh v-model="RefreshLoading" @refresh="onRefresh">
+            <van-list v-model="loading" :finished="finished" finished-text="没有更多数据" @load="onLoad">
+                <div class="head">
+                    <form action="/">
+                        <van-search
+                            class="search"
+                            v-model="keyword"
+                            shape="round"
+                            show-action
+                            @search="onSearch"
+                            background="#e6e5e5"
+                            placeholder="请输入搜索关键词">
+                        </van-search>
+                    </form>
+                </div>
+                <van-swipe-cell class="demo-swipe-cell mt10" :right-width="195" :left-width="0" v-for="i in 5">
+                    <van-cell-group :class="i > 2 ? 'bg-blue' : ''" @click="toPoint(i)">
+                        <div class="statutip"><van-icon name="success" /></div>
+                        <van-panel :title="'电子锁'+(i <= 2 ? i : 3)" status="在线">
+                            <van-cell title="位置" value="五采区回风机电硐室" icon="location-o"></van-cell>
+                            <van-cell title="测点" value="回风11204机电电源" icon="warning-o"></van-cell>
+                            <van-cell title="解锁有电" value="11:48" icon="info-o"></van-cell>
+                        </van-panel>
+                    </van-cell-group>
+                    <div class="right-box" slot="right">
+                        <div class="totop-btn">置顶</div>
+                        <div class="control-btn">控制</div>
+                        <div class="delete-btn">删除</div>
+                    </div>
+                </van-swipe-cell>
+                <van-swipe-cell class="demo-swipe-cell mt10" :right-width="195" :left-width="0">
+                    <van-cell-group @click="toPoint()">
+                        <div class="statutip"><van-icon name="success" /></div>
+                        <van-panel :title="'电子锁4'" status="在线">
+                            <van-cell title="位置" value="五采区回风机电硐室" icon="location-o"></van-cell>
+                            <van-cell title="测点" value="回风11204机电电源" icon="warning-o"></van-cell>
+                            <van-cell title="解锁有电" value="11:48" icon="info-o"></van-cell>
+                        </van-panel>
+                    </van-cell-group>
+                    <div class="right-box" slot="right">
+                        <div class="totop-btn">置顶</div>
+                        <div class="control-btn">控制</div>
+                        <div class="delete-btn">删除</div>
+                    </div>
+                </van-swipe-cell>
+            </van-list>
+        </van-pull-refresh>
+    </div>
+    <div class="footer">
+        <van-goods-action>
+            <van-goods-action-button @click="showError" color="#3374ee" type="warning" text="设备数据"></van-goods-action-button>
+            <van-goods-action-button @click="showError" color="#07c160" type="danger" text="设备管理"></van-goods-action-button>
+        </van-goods-action>
+    </div>
+</div>
+</body>
+<!--api.js是一个 JavaScript 库。是APICloud为混合移动开发定制的轻量JavaScript库-->
+<script src="../../script/api.js"></script>
+<script src="../../static/jquery-3.2.1.min.js"></script>
+<script src="../../static/vue.min.js"></script>
+<script src="../../static/vant.min.js"></script>
+<script src="../../static/component/footer.js?t=1"></script>
+<script src="../../static/units.js"></script>
+<!-- 组件 -->
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+    var app = new Vue({
+        el: '#app',
+        data: {
+            RefreshLoading: false,
+            loading: false,
+            finished: false,
+            keyword: "",
+        },
+        created:function(){
+
+        },
+        methods:{
+            onLoad:function() {
+                setTimeout(() => {
+                    this.loading = false;
+                    this.finished = true;
+                }, 500);
+            },
+            onRefresh:function() {
+                setTimeout(() => {
+                    this.RefreshLoading = false;
+                }, 500);
+            },
+            // 搜索
+            onSearch:function(){
+                
+            },
+            // 返回
+            onClickLeft:function(){
+                closePage()
+            },
+            toPoint:function(){
+                pageTo({
+                    name:"测点详情",
+                    url:"../point/index.html"
+                })
+            },
+            showError:function(){
+                this.$toast('暂未接入该页面功能');
+            }
+        }
+    })
+</script>
+</html>

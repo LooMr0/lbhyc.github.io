@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#303B4F">
+    <meta content="telephone=no" name="format-detection"/>
+    <meta content="email=no" name="format-detection"/>
+    <meta name="apple-mobile-web-app-title" content="took-web">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="x5-orientation" content="portrait"/>
+    <meta name="x5-fullscreen" content="true"/>
+    <meta name="x5-page-mode" content="app"/>
+    <meta name="HandheldFriendly" content="true">
+    <meta name="MobileOptimized" content="320">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="msapplication-TileColor" content="#303B4F"/>
+    <meta name="robots" content="index,follow">
+    <title>首页</title>
+    <!--    基础css样式文件-->
+    <link rel="stylesheet" href="../../static/index.css">
+    <link rel="stylesheet" href="../../static/css/vant.css">
+    <!-- APICloud   api.css 处理不同平台浏览器的默认样式-->
+    <link rel="stylesheet" href="../../css/api.css">
+    <script src="../../static/fastclick.js"></script>
+    <style>
+        *{
+            /* outline: 1px red solid; */
+        }
+        #app{
+            background-color: rgba(0,0,0,0.6);
+        }
+        .mescroll{
+            touch-action: pan-y;
+            width: 100%;
+            position: fixed;
+            top: calc(2.4rem + 15px);
+            bottom: calc(1.3rem + 12px);
+            height: calc(100vh - 3.7rem - 27px);
+            background: rgba(0,0,0,0.2);
+            overflow: auto;
+        }
+        .mescroll .van-list{
+            width: 100%;
+            min-height: calc(100vh - 3.7rem - 27px);
+        }
+        .search-head{
+            margin-top: 15px;
+            width: 100%;
+            height: 2.4rem;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            justify-content: space-around;
+            vertical-align: middle;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+            align-content: center
+        }
+        body{
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            color: #fff;
+            background: url('../../static/img/appBg.jpg')no-repeat transparent;
+            background-size: cover;
+            background-position: 100% 100%;
+        }
+        .van-grid-item__content .van-icon , .van-grid-item__content .van-grid-item__text{
+            color: #1989fa!important;
+        }
+        .s-left{
+            width: 3rem;
+            height: 100%;
+            line-height: 2.4rem;
+            text-align: center;
+        }
+        .s-left img{
+            width: 60%;
+        }
+        .s-right{
+            width: calc(100% - 3.5rem);
+            color: #fff;
+            font-size: 22px;
+            font-weight: 600;
+        }
+        .van-grid-item__text{
+            font-size: 20px!important;
+        }
+        .menu-list .van-icon{
+            font-size: 1.5rem!important;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="search-head">
+        <div class="s-left">
+        <img src="../../static/img/logo.png" alt=""></div>
+        <div class="s-right">XXXX矿 - 物联网系统</div>
+    </div>
+    <div class="mescroll">
+        <keep-alive>
+            <van-pull-refresh v-model="RefreshLoading" @refresh="onRefresh">
+                <van-list v-model="loading" :finished="finished" finished-text="" @load="onLoad">
+                    <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px', fontSize:'20px' }">
+                        物联网应用
+                    </van-divider>
+                    <van-grid class="menu-list" :column-num="2" square clickable :gutter="10">
+                        <van-grid-item
+                            :icon="item.icon"
+                            v-for="(item,index) in menuList"
+                            :key="index"
+                            :text="item.name"
+                            @click="openPage(item)"
+                        ></van-grid-item>
+                    </van-grid>
+                </van-list>
+            </van-pull-refresh>
+        </keep-alive>
+    </div>
+    <mas-footer @nav-click="navClickFun"></mas-footer>
+</div>
+</body>
+<!--api.js是一个 JavaScript 库。是APICloud为混合移动开发定制的轻量JavaScript库-->
+<script src="../../script/api.js"></script>
+<script src="../../static/jquery-3.2.1.min.js"></script>
+<script src="../../static/vue.min.js"></script>
+<script src="../../static/vant.min.js"></script>
+<script src="../../static/component/footer.js?t=1"></script>
+<script src="../../static/units.js"></script>
+<!-- 组件 -->
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+    var app = new Vue({
+        el: '#app',
+        data: {
+            isLoading:1,
+            RefreshLoading: false,
+            loading: false,
+            finished: false,
+            menuList:[{
+                name:"电子锁",
+                icon:"lock",
+                id:1
+            },{
+                name:"视频电源",
+                icon:"video",
+                id:2
+            },{
+                name:"瓦斯巡更",
+                icon:"location",
+                id:3
+            }]
+        },
+        created:function(){
+            this.getListInit();
+        },
+        methods:{
+            InitFun:function(){
+                this.getListInit();
+            },
+            searchNameFun:function(){
+                var that = this;
+                that.getListInit('true');
+            },
+            getListInit:function(status){
+                var that = this;
+            },
+            navClickFun: function(navIndex){
+                if(navIndex == 1){
+                    pageTo({
+                        name:"我的",
+                        url:"../my/index.html"
+                    })
+                }
+            },
+            onLoad() {
+                setTimeout(() => {
+                    this.loading = false;
+                    this.finished = true;
+                }, 500);
+            },
+            onRefresh() {
+                this.getListInit();
+                setTimeout(() => {
+                    this.$toast.success('已更新');
+                    this.RefreshLoading = false;
+                }, 500);
+            },
+            confirmDateFun:function () {
+                this.getListInit();
+            },
+            openPage:function (item) {
+                switch (item.id) {
+                    case 1:
+                        pageTo({
+                            name:"电子锁",
+                            url:"../dzlist/index.html"
+                        })
+                        break;
+                    default:
+                        this.$toast('暂未接入该应用');
+                        break;
+                }
+            },
+        }
+    })
+</script>
+</html>
